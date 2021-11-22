@@ -75,6 +75,21 @@ margin-right: auto;
    transition-property: transform;
    transition-duration: 0.7s;
 }
+.thanks_window{
+   position: fixed;
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   background-color: rgba(0, 0 ,0 ,0.8);
+   z-index: 10;
+   transform: translateY(-100%) scale(0);
+   transition-property: transform;
+   transition-duration: 0.7s;
+}
+.thanks_window_active{
+   transform: translateY(0) scale(1)
+}
 .form-user-login-popap-active{
    transform: translateY(0) scale(1)
 }
@@ -251,12 +266,17 @@ color: rgba(0,0,0,.1);
 .footer-links a{
    display: block;
 }
-
+.reserve-month-active{
+   background-color: lime!important;
+}
 .date-booked{
    pointer-events: none !important;
    background-color: #000000 !important;
 }
-
+.date-month-booked{
+   
+   background-color: #000000 !important;
+}
 .same_email{
    border: 2px solid red!important;
 }
@@ -424,6 +444,22 @@ color: #5E3693;
 transition-property: transform;
    transition-duration: 0.7s;
 }
+.form-popap-month{
+   position: fixed;
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   background-color: rgba(0, 0 ,0 ,0.8);
+   z-index: 10;
+   transform: translateY(-100%) scale(0);
+   transition-property: transform;
+   transition-duration: 0.7s;
+   display: flex;
+}
+.form-popap-month-active{
+   transform: translateY(0) scale(1);
+}
 .black{
       background-color: rgba(0, 0 ,0 ,0.8);
       border-radius: 5%;
@@ -517,6 +553,13 @@ input{
    display: flex;
    flex-wrap: wrap;
 }
+.booking-month-table-content{
+   background: #eaeaea;
+   justify-content: space-between;
+   padding: 8px;
+   display: flex;
+   flex-wrap: wrap;
+}
 .data-number{
    color: white;
    font-size: 20px;
@@ -563,7 +606,13 @@ input{
    border-radius: 5px;
    cursor: pointer;
 }
-
+.prev-year, .next-year{
+   background: #fff;
+   width: 60px;
+   height: 30px;
+   border-radius: 5px;
+   cursor: pointer;
+}
 @keyframes cardAnimationLeft {
    from{
       transform: translateX(-200%);
@@ -602,6 +651,29 @@ input{
 
 }
 @media(max-width:567px){
+   .register_buttons {
+      
+      transform: translateY(-100%) scale(0);
+      transition-duration: 1s;
+      transition-property: transform;
+  }
+  .header-user-button{
+     display: flex;
+  }
+  .a-paragrap {
+   
+   font-size: 25px;
+   
+}
+  .register-active-buttons {
+   transform: translateY(0) scale(1);
+   margin-top: 30px;
+   transition-duration: 1s;
+   transition-property: transform;
+}
+.register{
+   width: 254px;
+}
    .gallery-top img {
       height: 240px;
    }
@@ -609,7 +681,7 @@ input{
       margin-bottom: 35px;
    }
    .header{
-      height: 360px;
+      height: 460px;
    }
    .header-title{
       font-size: 32px;

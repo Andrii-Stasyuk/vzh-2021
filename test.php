@@ -15,7 +15,6 @@ $num_of_room  = $_GET['numOfRoom'];
 $date_arr = $_POST['arr'];
 // var_dump($num_of_room);
 // if(!empty($_POST['arr'])){
-
 $_SESSION['arr'] = $date_arr;
 // }
 $_SESSION['num_of_room'] = $_POST['num_of_room']; 

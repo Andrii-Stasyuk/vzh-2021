@@ -57,8 +57,11 @@
                 <?php endif ?>
                 <?php
                 if($_SESSION['email']): 
-                    
+                    if($_SESSION['status']=='1'):
                 ?>
+                
+                  <a class="register-href"><p class="order-change-btn a-paragrap">Бронювання</p></a>
+                  <?php endif ?>
                    <a href='<?php if($_SESSION['status']=='0'){echo 'cabinet.php';} else{echo 'admin.php';} ?>' class="register-href"><p class="login-off-user-button a-paragrap">Кабінет</p></a>
                     <a href='exit.php' class="register-href"><p class="login-off-user-button a-paragrap">Вийти</p></a>
                 <?php endif ?>
@@ -148,7 +151,36 @@
         </div>
     </footer>    
     </div>
+    <div class='form-popap-month'>
 
+
+
+
+
+
+
+    
+        <div class='register'>
+        <div class="popap-close">
+                   <i style=" color: white; pointer-event :none; font-size: 20px;" class="fas fa-times popap-month-close"></i>
+               </div>
+        <form class="black" method="POST" action="">
+            <div class="booking-month-table">
+                        <p class="booking-table-title">
+                            Виберіть закриті місяці
+                        </p>
+                        <div class='data-year-number'></div>
+                        <div class="booking-month-table-content">
+                            
+                        </div>
+                        
+                        <button value='true' name="close_month" type="submit" class=" btn btn-primary close-month">Зберегти</button>
+                    </div> 
+                    
+          </form>
+        </div>
+    </div>
+    
  <div <?php $open_reg=$_SESSION['open_register']; ?> class="<?php if($open_reg=='yes'){echo 'form-user-popap-active ';} ?>form-user-popap">
            <div class="register">
                <div class="popap-close">
@@ -175,8 +207,9 @@
                     <button value="true" name="button-users" type="submit" class=" btn btn-primary">Submit</button>
                     
                 </div>
-              </div> 
+              
             </form>
+    </div>
 </div>
 <div <?php $open=$_SESSION['open']; ?> class="form-user-login-popap <?php if($open=='yes'){echo 'form-user-login-popap-active';}?>">
            <div class="register">
@@ -199,9 +232,10 @@
                         $_SESSION['once_log'] = false;
                     }?></div>
                     
-                </div>
+                
               </div> 
             </form>
+    </div>
 </div>
    
    <div class="<?php if($_SESSION['open_update']){echo 'form-popap-active';}?> form-popap">

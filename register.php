@@ -14,7 +14,6 @@ if(!empty($_POST["button"])==true){
     // if(!empty($_SESSION['num_of_room'])&&!empty($_SESSION['arr'])){
       $number_of_room=$_SESSION['num_of_room'];
       $arr = $_SESSION['arr'];
-      
       var_dump($arr);
      
       
@@ -28,6 +27,6 @@ if(!empty($_POST["button"])==true){
       var_dump("INSERT INTO `orders`(`id`, `firstname`, `lastname`, `email`, `mobile`, `number_of_people`,  `number_of_rooms`, `dates`) VALUES (null,'$firstname','$lastname','$email','$phone','$number_of_people','$number_of_room', '$arr')");
                       
       
-      //  echo '<script>window.location.href="/"</script>';
+      echo '<script>window.location.href="thank.html"</script>';
    }
  ?>
