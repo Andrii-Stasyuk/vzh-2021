@@ -16,10 +16,21 @@ $date_arr = $_POST['arr'];
 // var_dump($num_of_room);
 // if(!empty($_POST['arr'])){
 $_SESSION['arr'] = $date_arr;
+$new_arr = explode(',', $date_arr);
+  $number_arr=[];
+  foreach($new_arr as $key=>$value){
+    
+    $number_arr[]=strtotime(mb_substr($value, 0, 33));
+    
+  }
+  asort($number_arr);
+  
+$str = 'з '.date("d-m-Y", $number_arr[0]).' по '.date("d-m-Y", $number_arr[count($number_arr)-1]);
 // }
 $_SESSION['num_of_room'] = $_POST['num_of_room']; 
+$_SESSION['date_str'] = $str;
 $all = $mysqli->query("SELECT * FROM `orders`");
-$three = $mysqli->query("SELECT  `firstname`, `lastname`, `email`, `mobile`, `dates`, `number_of_people`, `number_of_rooms` FROM `orders` WHERE `number_of_rooms`=".'"'.'3x двохмісний'.'"');
+$three = $mysqli->query("SELECT  `firstname`, `lastname`, `email`, `mobile`, `dates`, `number_of_people`, `number_of_rooms`, `date_str` FROM `orders` WHERE `number_of_rooms`=".'"'.'3x двохмісний'.'"');
 $other = $mysqli->query("SELECT  *  FROM `orders` WHERE `number_of_rooms`="."'".$num_of_room."'");
 // var_dump("SELECT * FROM `orders` WHERE `number_of_rooms`=".'"'.$num_of_room.'"');
 while($one=mysqli_fetch_array($all)){

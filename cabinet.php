@@ -14,6 +14,7 @@
  require 'db_conect.php';
   $result = $mysqli->query('SELECT * FROM orders WHERE `email`='.'"'.$email.'"');
   $order = mysqli_fetch_array($result);
+  
   if(empty($order)):
   ?>
   <header class="header">
@@ -31,7 +32,8 @@
   </header>
    <h1 style='text-align: center; margin-bottom: 15px; '>На даний момент у вас ще немає бронювань</h1>
    <?php endif; ?>
-  <table class="table">
+   <div class="table-responsive">
+   <table class="table">
   <thead>
     <tr>
       <th scope="col">Ім'я</th>
@@ -53,16 +55,19 @@
         <td><?php echo $order['lastname']; ?></td>
         <td><?php echo $order['email']; ?></td>
         <td><?php echo $order['mobile']; ?></td>
-        <td><?php echo $order['dates']; ?></td>
+        <td><?php echo $order['date_str']; ?></td>
         <td><?php echo $order['number_of_people']; ?></td>
         <td><?php echo $order['number_of_rooms']; ?></td>
         <td> <a href='update.php?id=<?php echo $order["Id"]; ?>'>Редагування</a> </td>
-        <td> <a href='delete.php?id=<?php echo $order["Id"]; ?>'>Видалення</a> </td>
+        <td> <a href='delete-order.php?id=<?php echo $order["Id"]; ?>'>Видалення</a> </td>
       </tr>
       <?php
       }
       
      ?>
-    
+    </tbody>
+  </table>
+   </div>
+  
 </body>
 </html>

@@ -5,42 +5,12 @@ $(window).on("load", function(){
   });
   let index;
   let rightMonthes = [];
+  let arrClosed;
  fetch('../close-month.php')
   .then(res=>res.json())
   .then(data=>{  
-  
     arrClosed = data['arr'].split(',')
-   arrClosed = arrClosed.map(el=>Number(el)).sort((a,b)=>a-b)
-   
-   for(let i = 1; i<=12; i++){
-     
-        if(arrClosed.some(month=>month==i)){
-          
- 
-          
-        } else{
-          rightMonthes.push(i)
-         
-        }
-       
-   }   
-   let nowMonth = Number(now.getMonth()+1)
-   
-   if(rightMonthes.some(el=>el==nowMonth)){
-    index = rightMonthes.findIndex(el=>el==nowMonth)
-    
-    
-   } else{
-    rightMonthes.push(nowMonth)
-    rightMonthes.sort((a,b)=>a-b)
-    if(rightMonthes[rightMonthes.length-1]!=nowMonth){
-      index = rightMonthes.findIndex(el=>el==nowMonth) + 1
-    } else{
-      index = 0
-    }
-    rightMonthes = rightMonthes.filter(el=>el!=nowMonth)
-   }
-  
+    arrClosed = arrClosed.map(el=>Number(el)).sort((a,b)=>a-b)
  })
     localStorage.clear();
   const now = new Date();
@@ -54,6 +24,24 @@ $(window).on("load", function(){
   let secondDate;
   let active = [];
   let userLastDates=[];
+  const bookingTableContent = document.querySelector('.booking-table-content');
+
+  function closedMonthes() {
+    if(arrClosed.some(close=>close==month)){
+      bookingTableContent.classList.add('closed-month')
+      bookingTableContent.classList.add('none-click')
+      
+  } else{
+       bookingTableContent.classList.remove('closed-month')
+       bookingTableContent.classList.remove('none-click')
+  }
+   }
+  //  function getUserDates(oldDates){
+    
+  //    return oldDates.map(el=>el)
+    
+  //  }
+   
   const formUpdate = document.querySelector('.order_up')
   function bookedRooms(value){
     
@@ -61,18 +49,18 @@ $(window).on("load", function(){
    reserves.forEach(item=>{
      item.classList.remove('date-booked')
    })
+   
  if(value!=0){
    fetch(`../test.php?numOfRoom=${value}`)
    .then(response=>response.json())
    .then(data=>{
      if(data){
-       
+    
      data.forEach(date=>{
        
       const arr = date.split(',')
-          
-           
-       
+    
+      console.log(arr)
        arr.forEach(el=>{
          
          if(formUpdate.getAttribute('data-update')){
@@ -84,43 +72,38 @@ $(window).on("load", function(){
              oldDates.forEach(last=>{
                
                  if(el!=last){
-                  
+                 
                    const btnUnactive = document.querySelector(`.reserve-active[date="${el}"]`);
-                   
+                  //  console.log(btnUnactive)
                    if(btnUnactive!=null){
+                   
                    if(!btnUnactive.classList.contains('booking-btn-active')){
-                     
+                      
                        btnUnactive.classList.add('date-booked')
                      }
                    }
                    
                  } else{
-                   
+                  
+                  
                      const btn = document.querySelector(`.reserve-active[date="${last}"]`);
                      
                      if(btn!=null){
-                      
+                      if(!btn.classList.contains('booking-btn-active')){
                        btn.classList.remove('date-booked')
                        btn.classList.add('booking-btn-active')
-                    
-                       
-                       
-                       
-                         tableDateInfo(btn)
-                       
-                       
-                     
+                       tableDateInfo(btn)
+                      }
                    }
                  }
              })
-               
            })
                
-             // 
-             // 
          } else{
+           
            const btnUnactive = document.querySelector(`.reserve-active[date="${el}"]`);
                  if(btnUnactive!=null){
+                   
                    btnUnactive.classList.add('date-booked')
                  }
         }
@@ -253,7 +236,7 @@ $(window).on("load", function(){
     }
  
  ];
- let arrClosed;
+
  
 
   
@@ -327,9 +310,11 @@ const renderMonthTable = () => {
  allDateArr.push(btn.getAttribute('date'))
  }
  localStorage.setItem('dateArr' , JSON.stringify([]));
+
  const tableDateInfo = (btn) => {
+let constMonth;
  const dateNameBlock = document.querySelector('.data-number');
- 
+ console.log(month)
    let dateArr = JSON.parse(localStorage.getItem('dateArr'));
    const priceNum = document.querySelector('.price_number')
    const priceBlock = document.querySelector('.price')
@@ -350,13 +335,13 @@ const renderMonthTable = () => {
        if(dateArr[0] !== parsedDate){
  
            if(dateArr[0] > parsedDate && (dateArr[0] - parsedDate === day || dateArr[0] - parsedDate===90000000)){
-            
+              constMonth = month;
                setDate(btn)
                dateArr.unshift(parsedDate);
                dateNameBlock.innerHTML = `з ${getDate(dateArr[0])} до ${getDate(dateArr[1])}`
            } else if (dateArr[0] < parsedDate && (dateArr[0] - parsedDate === -day || dateArr[0] - parsedDate===-90000000)) {
                setDate(btn)
-              
+               constMonth = month;
                dateArr.push(parsedDate);
                dateNameBlock.innerHTML = `з ${getDate(dateArr[0])} до ${getDate(dateArr[1])}`
            }
@@ -364,7 +349,8 @@ const renderMonthTable = () => {
            secondDate = getDate(dateArr[1]);
            
        } else {
-           dateNameBlock.innerHTML = `${writeZero(month)} ${year}`
+        monthNameBlock.innerHTML = `${writeZero(month)} ${year}`
+        dateNameBlock.innerHTML=''
            btn.classList.remove('booking-btn-active')
            localStorage.removeItem(`id${btn.getAttribute('date')}`, btn.textContent)
            localStorage.removeItem('currentDate')
@@ -376,13 +362,13 @@ const renderMonthTable = () => {
        if(dateArr.every(el => el !== parsedDate)){
            if(dateArr[0] > parsedDate && (dateArr[0] - parsedDate === day || dateArr[0] - parsedDate===90000000)){
                setDate(btn)
-               
+              constMonth = month;
                dateArr[0] = parsedDate;
                btn.classList.add('booking-btn-active')
            }
            if(dateArr[1] < parsedDate && (dateArr[1] - parsedDate === -day || dateArr[1] - parsedDate===-90000000)){
                setDate(btn)
-               
+               constMonth = month;
                btn.classList.add('booking-btn-active')
                dateArr[1] = parsedDate;
            }
@@ -442,12 +428,12 @@ const renderMonthTable = () => {
    fetch('../send-price.php')
       .then(res=>res.json())
       .then(data=>{
-     
+    
         if(dateArr.length<2){
           
-         priceNum.innerText=`Введіть день заїзду і день виїзду`;
+         priceNum.innerText=`Виберіть хоча б 2 дні`;
         } else{
-           if(6<=month&&month<=8){
+           if(6<=constMonth&&constMonth<=8){
             
              if(localStorage.getItem('room')=='двохмісний'){
                
@@ -495,6 +481,7 @@ const renderMonthTable = () => {
  let changed;
  let constYear;
  let count = 0;
+ 
    document.addEventListener('change', (e)=>{
      const target = e.target;
      changed = true;
@@ -504,20 +491,11 @@ const renderMonthTable = () => {
       bookingTable.style.display = 'block';
       const value = target.value;
       
-      if(rightMonthes.some(el=>el>=now.getMonth()+1)){
-        constYear = now.getFullYear()
-      }else{
-        if(index==0&&rightMonthes[0]!=now.getMonth()+1&&count==0){
-          count = 1;
-          constYear = ++year
-        }
-      }
-      
-      month = rightMonthes[index];
+     
       daysOnLoad = daysInMonth(month, year)
       renderBookingTable(daysOnLoad)
-
-       bookedRooms(value)
+      closedMonthes()
+      bookedRooms(value)
        
       localStorage.setItem('room', value)
       
@@ -541,19 +519,16 @@ const renderMonthTable = () => {
    .then(data=>{
      const bookingTable = document.querySelector('.booking-table');
       bookingTable.style.display = 'block';
-      const value = data['number_of_rooms'];
-      if(rightMonthes.some(el=>el>=now.getMonth()+1)){
-        console.log(11111)
-        constYear = now.getFullYear()
-      }else{
-        if(index==0&&rightMonthes[0]!=now.getMonth()+1&&count==0){
-          count = 1;
-          constYear = ++year
-        }
-      }
-      month = rightMonthes[index];
-      daysOnLoad = daysInMonth(month, year)
-      renderBookingTable(daysOnLoad)
+      const value = data['number_of_rooms'];     
+      
+      
+      let arr = data['dates'].split(',')
+      arr = arr.map(el=>Date.parse(el)).sort((a,b)=>a-b)
+      month = new Date(arr[0]).getMonth()+1
+      year = new Date(arr[0]).getFullYear()
+      daysOnLoad = daysInMonth(month, year);
+      renderBookingTable(daysOnLoad);  
+      closedMonthes()
       bookedRooms(value)
       localStorage.setItem('room', value)
        const people = data['number_of_people'];
@@ -568,12 +543,13 @@ const renderMonthTable = () => {
  let reserveActive;
  let allLocalKeys = [];
  const dateNameBlock = document.querySelector('.data-number');
+ const monthNameBlock = document.querySelector('.month-number')
  let arrData = [];
 
  const renderBookingTable=(days)=>{
    const wrapper = document.querySelector('.booking-table-content');
    const activeBtns = document.querySelectorAll('.booking-btn-active')
-   dateNameBlock.innerHTML = `<p>${writeZero(month)} ${year}</p>`
+   monthNameBlock.innerHTML = `<p>${writeZero(month)} ${year}</p>`
    wrapper.innerHTML='';
   
   
@@ -609,8 +585,7 @@ const renderMonthTable = () => {
    
  }
 
- 
- document.addEventListener('click', (e)=>{
+  document.addEventListener('click', (e)=>{
    
    const data = new Date(year, month - 1)
    const dataYear = now.getFullYear()
@@ -638,27 +613,25 @@ const renderMonthTable = () => {
      
     
   } 
-  
    
    if(e.target.classList.contains('next')){
     // console.log(rightMonthes[index+1])
-    console.log(rightMonthes)
-     if(index>=rightMonthes.length-1){
-      index = 0
-      month = rightMonthes[0];
+    
+    
+    console.log(arrClosed)
+    if(month>=12){
+      month = 1;
       year = ++year;
     } else{
-      index = ++index
-      month = rightMonthes[index];
-     
+      month = ++month;
+   
   }
-   
-    
-    
-   
-   bookedRooms(localStorage.getItem('room'))
-    daysOnLoad = daysInMonth(month, year);
-    renderBookingTable(daysOnLoad); 
+
+  
+  bookedRooms(localStorage.getItem('room'))
+   daysOnLoad = daysInMonth(month, year);
+   renderBookingTable(daysOnLoad); 
+   closedMonthes()
     if(localStorage.getItem('currentDate')){
      dateNameBlock.innerHTML = `<p>${localStorage.getItem('currentDate')}</p>`
     }
@@ -666,28 +639,17 @@ const renderMonthTable = () => {
     }
     
   if(e.target.classList.contains('prev')){
-    console.log(index)
-    let firstMonth;
-    if(rightMonthes.some(el=>el>=now.getMonth()+1)){
-      firstMonth = new Date(constYear, rightMonthes[index]) 
-    } else{
-      firstMonth = new Date(constYear, rightMonthes[0]) 
-    }
-  
-   if(data>=firstMonth){
+   if(data>=now){
    
-     if(index<=0){
-      
-       month = rightMonthes[rightMonthes.length-1];
-       index = rightMonthes.length-1
-       year = --year;
-     } else{
-     index = --index;
-     month = rightMonthes[index];
-   }
+    if(month<=1){
+      month=12;
+      year = --year;
+    } else{
+    month = --month;
+  }
   }
  bookedRooms(localStorage.getItem('room'))
- 
+ closedMonthes()
  
   daysOnLoad = daysInMonth(month, year);
   renderBookingTable(daysOnLoad);  
@@ -697,7 +659,7 @@ const renderMonthTable = () => {
  }
    if(e.target.classList.contains('order')){
      const numOfRoom = document.querySelector('select[name="rooms"]').value;
-     const orderForm = document.querySelector('.black')
+    
      const formdata = new FormData()
      formdata.set('arr', allDateArr)
      formdata.set('num_of_room', numOfRoom)
@@ -712,6 +674,7 @@ const renderMonthTable = () => {
    // window.location.href='test.php';
  
    }
+   console.log(allDateArr)
    if(e.target.classList.contains('update')){
      //e.preventDefault()
     const numOfRoom = document.querySelector('select[name="rooms"]').value;

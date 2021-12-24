@@ -8,6 +8,7 @@
  }
  if($_SESSION['status']){
   $_SESSION['open'] = 'no';
+ 
 }
 
 
@@ -52,6 +53,7 @@
         $new_array[]=$row;
 
   }
+  
 
    ?>
 
@@ -89,7 +91,7 @@
         <td><?php echo $value['mobile']; ?></td>
         <td><?php echo $value['number_of_people']; ?></td>
         <td><?php echo $value['number_of_rooms']; ?></td>
-        <td><?php echo $value['dates']; ?></td>
+        <td><?php echo $value['date_str']; ?></td>
   
   
   

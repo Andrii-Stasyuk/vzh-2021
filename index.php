@@ -289,9 +289,13 @@
                     Виберіть дату
                 </p>
                 <div class='data-number'></div>
+                <div class='month-number'></div>
                 <div class="booking-table-content">
                       
                 </div>
+                <!-- <div class="close-label">
+                         На жаль, цей місяць закритий. Виберіть інший місяць 
+                </div> -->
                 <div class="booking-btns">
                     <div class="prev">
                         Prev

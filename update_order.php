@@ -16,10 +16,10 @@ if(!$_SESSION['arr']){
 
 $number_of_people=$_POST["room"];
 $number_of_rooms=$_SESSION['num_of_room'];
-
+$date_str = $_SESSION['date_str'];
 $text = "UPDATE orders SET firstname='$firstname',lastname='$lastname',email='$email',
 mobile='$mobile',dates='$dates',number_of_people='$number_of_people',
-number_of_rooms='$number_of_rooms' WHERE id=".$_SESSION["id"];
+number_of_rooms='$number_of_rooms', date_str='$date_str' WHERE id=".$_SESSION["id"];
 $mysqli->query($text);
 // echo '<script>window.location.href="cabinet.php"</script>';
 }
